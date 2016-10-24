@@ -1,0 +1,24 @@
+{
+  "name": "es-zeit",
+  "version": "1.0.0",
+  "description": "try to install elasticsearch on zeit.co(now server)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "elasticsearch",
+    "now",
+    "zeit"
+  ],
+  "author": "Soar Lin <soar.lin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "co-body": "^4.2.0",
+    "elasticsearch": "^11.0.1",
+    "koa": "^1.2.4",
+    "koa-route": "^2.4.2",
+    "moment": "^2.15.1"
+  }
+}

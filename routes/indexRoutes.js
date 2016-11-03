@@ -59,12 +59,17 @@ var blogs_index = {
 };
 
 module.exports.createIndex = function *(index, type) {
-    var postedData = yield parse(this);
     var result = {create: 'pendding'};
+    var bodyIndex = blogs_index;
+
+    if (this.request.type) {
+        var postedData = yield parse(this);
+        bodyIndex = (postedData.body) ? postedData.body : blogs_index;
+    }
 
     var index = (index === undefined) ? 'blogs' : index;
     var type = (type === undefined) ? 'article' : type;
-    var bodyIndex = (postedData.body) ? postedData.body : blogs_index;
+
     yield es.client.create({
         index: index,
         type: type,

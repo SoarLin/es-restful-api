@@ -121,7 +121,7 @@ var check_last_index_file = function(data) {
     return new Promise(function(resolve, reject){
         fs.access(lastIndexFile, fs.R_OK | fs.W_OK, function(err) {
             if (err) {
-                reject({status: 'fail'});
+                resolve({status: 'fail', obj: data.obj});
             } else {
                 resolve({status: 'ok', obj: data.obj });
             }
@@ -131,20 +131,25 @@ var check_last_index_file = function(data) {
 
 var get_last_index = function(data) {
     return new Promise(function(resolve, reject) {
+        var obj = data.obj;
+
         if (data.status === 'ok') {
-            var obj = data.obj;
             fs.readFile(lastIndexFile, 'utf8', function(err, response) {
-                if(err) reject({status: 'fail'});
-                else resolve({status: 'ok', obj: obj, time: response});
+                if(err){
+                    reject({status: 'fail'});
+                } else {
+                    resolve({status: 'ok', obj: obj, time: response});
+                }
             });
         } else {
-            resolve({status: 'fail'});
+            resolve({status: 'fail', obj: obj, time: 0});
         }
     });
 };
 
 var bulkArticles = function(data) {
     return new Promise(function(resolve, reject) {
+        var last_index_time = 0;
         if( data.status === 'ok') {
             last_index_time = parse_datetime(data.time);
         }
@@ -207,7 +212,7 @@ module.exports.postUpdate = function *() {
     if (hasUpload) {
         yield check_db_json(tmpfile)
             .then(check_last_index_file)
-            .then(get_last_index, null)
+            .then(get_last_index)
             .then(bulkArticles)
             .then(update_last_index_file, function(res){console.log(res.msg);})
             .then(function(res){

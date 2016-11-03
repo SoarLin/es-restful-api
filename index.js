@@ -1,6 +1,10 @@
 var koa = require('koa');
 var route = require('koa-route');
 var app = module.exports = koa();
+var path = require('path');
+var serve = require('koa-static');
+
+app.use(serve(path.join(__dirname, '/public')));
 
 // Create Index,Type && Delete whole Indeies
 var indexRoutes = require('./routes/indexRoutes');
@@ -9,7 +13,8 @@ app.use(route.post('/delete/:index', indexRoutes.deleteIndex));
 
 // Update Documents to index/type
 var updateRoutes = require('./routes/updateRoutes');
-app.use(route.post('/update/:index/:type', updateRoutes.updateDocument));
+app.use(route.get('/update/', updateRoutes.getUpdate));
+app.use(route.post('/update/', updateRoutes.postUpdate));
 
 // Search
 var searchRoutes = require('./routes/searchRoutes');

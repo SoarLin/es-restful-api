@@ -9,7 +9,7 @@ function getArticleLink(article) {
     var title = article._source.title;
     var article_name = _id.substr(_id.indexOf('.')+1);
     var unix_timestamp = article._source.date;
-    var publish_date = moment(unix_timestamp * 1000).format('YYYY/MM/DD');
+    var publish_date = moment(unix_timestamp).format('YYYY/MM/DD');
     var link = publish_date + '/' + article_name + '/';
 
     return { title : title, link: link,

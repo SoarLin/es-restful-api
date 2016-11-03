@@ -80,6 +80,7 @@ module.exports.createIndex = function *(index, type) {
     });
 
     this.set('Access-Control-Allow-Origin', '*');
+    this.set('Content-Type', 'application/json;charset=utf-8;');
     this.body = result;
 };
 
@@ -99,5 +100,6 @@ module.exports.deleteIndex = function *(index) {
     });
 
     this.set('Access-Control-Allow-Origin', '*');
+    this.set('Content-Type', 'application/json;charset=utf-8;');
     this.body = result;
 }

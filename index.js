@@ -18,7 +18,7 @@ app.use(route.post('/update/', updateRoutes.postUpdate));
 
 // Search
 var searchRoutes = require('./routes/searchRoutes');
-app.use(route.get('/search/:keyword/:size', searchRoutes.searchKeyword));
+app.use(route.post('/search/:index/:type', searchRoutes.postSearch));
 
 // Start app up
 app.listen(3000);

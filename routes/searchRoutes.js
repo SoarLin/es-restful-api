@@ -1,5 +1,8 @@
 var moment = require('moment');
+var parse = require('co-body');
 var es = require('./../lib/es');
+
+var INDEX = 'blogs', TYPE = 'article';
 
 function getArticleLink(article) {
     var _id = article._id;
@@ -19,8 +22,8 @@ function * searchBlogArticla(keyword, size) {
     var result = [];
 
     yield es.client.search({
-        index: 'blogs',
-        type: 'article',
+        index: INDEX,
+        type: TYPE,
         q: keyword,
         size: size
     }).then( function(body) {
@@ -40,8 +43,16 @@ function * searchBlogArticla(keyword, size) {
     return result;
 }
 
-module.exports.searchKeyword = function *(keyword, size) {
-    var size = (size === undefined) ? 5 : size;
+module.exports.postSearch = function *(index, type) {
+    INDEX = (index === undefined) ? INDEX : index;
+    TYPE = (type === undefined) ? TYPE : type;
+
+    var size = 5, keyword = '';
+    if (this.request) {
+        var postedData = yield parse(this);
+        size    = (postedData.size) ? postedData.size : size;
+        keyword = (postedData.keyword) ? postedData.keyword : keyword;
+    }
 
     var result = yield searchBlogArticla(keyword, size);
 

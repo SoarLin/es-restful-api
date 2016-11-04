@@ -158,7 +158,8 @@ var bulkArticles = function(data) {
             es.client.bulk({
                 body: actions
             }, function (err, res){
-                if (err === undefined) {
+                // console.log(res.items[0].index.error);
+                if (err === undefined || res.items[0].index.error === undefined) {
                     RESULT.update = 'success';
                     resolve({ status: 'ok' });
                 } else {

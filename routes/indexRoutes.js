@@ -58,25 +58,39 @@ var blogs_index = {
     }
 };
 
-module.exports.createIndex = function *(index, type) {
+var indexExists = function (indexName) {
+    return es.client.indices.exists({
+        index: indexName
+    });
+};
+
+var deleteIndex = function (indexName) {
+    return es.client.indices.delete({
+        index: indexName
+    });
+};
+
+module.exports.createIndex = function *(index) {
     var result = {create: 'pendding'};
     var bodyIndex = blogs_index;
+    var index = (index === undefined) ? 'blogs' : index;
 
     if (this.request.type) {
         var postedData = yield parse(this);
-        bodyIndex = (postedData.body) ? postedData.body : blogs_index;
+        bodyIndex = (postedData.mappings) ? postedData : blogs_index;
     }
 
-    var index = (index === undefined) ? 'blogs' : index;
-    var type = (type === undefined) ? 'article' : type;
+    if (indexExists(index)) {
+        console.log("{index = " + index + "} already exists, delete it!");
+        deleteIndex(index);
+    }
 
-    yield es.client.create({
+    yield es.client.indices.create({
         index: index,
-        type: type,
-        body: blogs_index,
-    }).then(function(body) {
-        if (body.created === true) {
-            result = {create: 'success', index: index, type: type};
+        body: bodyIndex
+    }).then(function(res) {
+        if (res.acknowledged === true) {
+            result = {create: 'success', index: index, type: Object.keys(bodyIndex.mappings)[0]};
         } else {
             result = {create: 'fail'};
         }

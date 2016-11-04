@@ -8,7 +8,7 @@ app.use(serve(path.join(__dirname, '/public')));
 
 // Create Index,Type && Delete whole Indeies
 var indexRoutes = require('./routes/indexRoutes');
-app.use(route.post('/create/:index/:type', indexRoutes.createIndex));
+app.use(route.post('/create/:index', indexRoutes.createIndex));
 app.use(route.post('/delete/:index', indexRoutes.deleteIndex));
 
 // Update Documents to index/type

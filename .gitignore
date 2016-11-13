@@ -38,3 +38,6 @@ jspm_packages
 
 # upload file
 public/upload/*
+
+# last index time
+.es-last-index-time

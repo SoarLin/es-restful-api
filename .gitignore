@@ -41,3 +41,6 @@ public/upload/*
 
 # last index time
 .es-last-index-time
+
+# env setting
+.env

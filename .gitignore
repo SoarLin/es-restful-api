@@ -38,6 +38,7 @@ jspm_packages
 
 # upload file
 public/upload/*
+!public/upload/.gitkeep
 
 # last index time
 .es-last-index-time

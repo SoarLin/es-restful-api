@@ -1,0 +1,56 @@
+{
+    "settings": {
+        "number_of_shards" :   1,
+        "number_of_replicas" : 0
+    },
+    "_default_": {},
+    "mappings": {
+       "blogs": {
+            "dynamic": false,
+            "date_detection": false,
+            "_all": {
+                  "analyzer": "ik_max_word",
+                  "search_analyzer": "ik_smart",
+                  "term_vector": "no"
+            },
+            "properties": {
+                "title": {
+                    "type": "text" ,
+                    "term_vector": "with_positions_offsets",
+                    "include_in_all": true,
+                    "analyzer": "ik_max_word",
+                    "search_analyzer": "ik_smart",
+                    "boost": 2
+                },
+                "slug": {
+                    "type": "text",
+                    "index": "no"
+                },
+                "date": {
+                    "type": "date",
+                    "format": "strict_date_optional_time||epoch_millis"
+                },
+                "updated": {
+                    "type": "date",
+                    "format": "strict_date_optional_time||epoch_millis"
+                },
+                "categories": {
+                    "type": "text",
+                    "index": "not_analyzed"
+                },
+                "tags": {
+                    "type": "text",
+                    "index": "not_analyzed"
+                },
+                "content": {
+                    "type": "text",
+                    "term_vector": "with_positions_offsets",
+                    "include_in_all": true,
+                    "analyzer": "ik_max_word",
+                    "search_analyzer": "ik_smart",
+                    "norms": { "enabled": false }
+                }
+           }
+       }
+    }
+}

@@ -96,25 +96,25 @@ keyword={keyword}&size={size}
 
 # Server 端參考指令
 
-## check elasticsearch
+## Check ElasticSearch
 
 ````
 curl localhost:9200
 ````
 
-## list all index
+## List all index
 
 ````
 curl localhost:9200/_cat/indices?v
 ````
 
-## list all types in index
+## List all types in index
 
 ````
 curl -XGET 'http://localhost:9200/INDEX_NAME/_mapping?pretty'
 ````
 
-## put mapping date to index
+## PUT mapping date to index
 記得替換掉 -d 後方的 json 資料
 
 ````
@@ -136,4 +136,52 @@ curl -X PUT 'localhost:9200/INDEX_NAME/' -d '{
     }
   }
 }'; echo 
+````
+
+
+# Others
+
+## Verify ik 分詞
+
+````
+HTTP Method : GET
+http://ELASTICSEARCH_IP:9200/index/_analyze?analyzer=ik_max_word&text=故宮博物院
+````
+
+正確回傳如下
+
+````
+{
+    tokens: [{
+        token: "故",
+        start_offset: 0,
+        end_offset: 1,
+        type: "CN_CHAR",
+        position: 0
+    }, {
+        token: "宮",
+        start_offset: 1,
+        end_offset: 2,
+        type: "CN_CHAR",
+        position: 1
+    }, {
+        token: "博物院",
+        start_offset: 2,
+        end_offset: 5,
+        type: "CN_WORD",
+        position: 2
+    }, {
+        token: "博物",
+        start_offset: 2,
+        end_offset: 4,
+        type: "CN_WORD",
+        position: 3
+    }, {
+        token: "院",
+        start_offset: 4,
+        end_offset: 5,
+        type: "CN_CHAR",
+        position: 4
+    }]
+}
 ````

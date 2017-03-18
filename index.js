@@ -35,7 +35,7 @@ if (process.env.APP_ENV === 'soar') {
 
 } else if (process.env.APP_ENV === 'production') {
 
-    var le = require('letsencrypt-express').create({
+    var le = require('greenlock-express').create({
       server: 'https://acme-v01.api.letsencrypt.org/directory'
     , configDir: require('os').homedir() + '/letsencrypt/etc'
     , approveDomains: function (opts, certs, cb) {
@@ -51,7 +51,7 @@ if (process.env.APP_ENV === 'soar') {
     var https = require('spdy');
     var server = https.createServer(le.httpsOptions, le.middleware(app.callback()));
     //console.log(le.httpsOptions);
-    server.listen(3000, function () {
+    server.listen(443, function () {
         console.log('Listening at https://soar.stco.tw:' + this.address().port);
     });
 
